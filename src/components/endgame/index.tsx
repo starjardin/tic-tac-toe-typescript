@@ -1,15 +1,12 @@
-interface Props {
-	name: string | null
-	handleRestart(): void
-}
+import Custom from '../Custom'
 
-const EndGame = (props: Props) => {
-	const { name, handleRestart } = props
+const EndGame = () => {
+	const { handleRestart, winner } = Custom()
 	return (
 		<div>
 			<h1>
-				{name && `Player ${name} won the game`}
-				{!name && "It's a tie "}
+				{winner && `Player ${winner} won the game`}
+				{!winner && "It's a draw! "}
 			</h1>
 			<button onClick={handleRestart}>Restart</button>
 		</div>
