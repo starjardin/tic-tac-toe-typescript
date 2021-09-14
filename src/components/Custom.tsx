@@ -17,8 +17,15 @@ interface ReturnValue {
 	winner: string | null
 	handleClick: (index: number) => void
 	handleRestart: () => void
-	handleStart: (players: string[]) => void
+	handleStart: (players: Players[]) => void
+	handleReboot: () => void
 }
+
+interface Players {
+	name: string
+	score: number
+}
+
 const Custom = (): ReturnValue => {
 	const gameState = useAppSelector(selectGameState)
 	const { board, turn, winner, players, status } = gameState
@@ -43,11 +50,11 @@ const Custom = (): ReturnValue => {
 
 		while (winningPositionsIndex < winningPositions.length && !winner) {
 			const boardPositionsToCheck = winningPositions[winningPositionsIndex]
-			const boardValuesToCkeck = boardPositionsToCheck.map(
+			const boardValuesToCheck = boardPositionsToCheck.map(
 				(index) => board[index]
 			)
-			const checkingValue = boardValuesToCkeck[0]
-			const isFinished = boardValuesToCkeck.every(
+			const checkingValue = boardValuesToCheck[0]
+			const isFinished = boardValuesToCheck.every(
 				(value) => value === checkingValue && checkingValue
 			)
 			winner = !isFinished ? null : checkingValue
@@ -55,8 +62,7 @@ const Custom = (): ReturnValue => {
 		}
 
 		if (winner) {
-			console.log(winner, 'winner', players, 'Players')
-			dispatch(setWinner(winner === 'X' ? players[0] : players[1]))
+			dispatch(setWinner(winner === 'X' ? players[0].name : players[1].name))
 			dispatch(setStatus('finished'))
 			return
 		}
@@ -75,7 +81,7 @@ const Custom = (): ReturnValue => {
 		dispatch(setTurn(newTurn))
 	}
 
-	const handleStart = (players: string[]) => {
+	const handleStart = (players: Players[]) => {
 		dispatch(setPlayers(players))
 		dispatch(setTurn('X'))
 		dispatch(setStatus('started'))
@@ -83,9 +89,36 @@ const Custom = (): ReturnValue => {
 	const handleRestart = () => {
 		dispatch(setBoard(Array(9).fill('')))
 		dispatch(setWinner(''))
+		dispatch(setStatus('restarted'))
+		dispatch(
+			setPlayers(
+				players.map((e: any) => {
+					if (e.name === winner) {
+						return {
+							...e,
+							score: e.score + 1,
+						}
+					}
+					return e
+				})
+			)
+		)
+	}
+	const handleReboot = () => {
+		dispatch(setBoard(Array(9).fill('')))
+		dispatch(setWinner(''))
 		dispatch(setStatus('created'))
 	}
-	return { board, status, winner, handleClick, handleRestart, handleStart }
+
+	return {
+		board,
+		status,
+		winner,
+		handleClick,
+		handleRestart,
+		handleStart,
+		handleReboot,
+	}
 }
 
 export default Custom

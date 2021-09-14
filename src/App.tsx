@@ -1,7 +1,8 @@
 import { Route, Switch } from 'react-router'
 import './App.css'
 import Custom from './components/Custom'
-import EndGame from './components/endgame'
+import EndGame from './components/endgame/EndGame'
+import WinningGame from './components/endgame/WinningGame'
 import Game from './components/ongame'
 import StartGame from './components/startgame'
 
@@ -28,14 +29,15 @@ import StartGame from './components/startgame'
 // }
 
 const App = () => {
-	const game = Custom()
+	const { status } = Custom()
 
 	return (
 		<div className='App'>
 			<h1>Tic tac toe</h1>
-			{game.status === 'created' && <StartGame />}
-			{game.status === 'finished' && <EndGame />}
-			{game.status === 'started' && <Game />}
+			{status === 'created' && <StartGame />}
+			{status === 'finished' && <WinningGame />}
+			{status === 'started' && <Game />}
+			{status === 'restarted' && <EndGame />}
 		</div>
 	)
 }

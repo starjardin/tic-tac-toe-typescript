@@ -6,7 +6,13 @@ export interface GameTypes {
 	turn: string
 	winner: string | null
 	status: string
-	players: string[]
+	players: Players[]
+	time: number
+}
+
+interface Players {
+	name: string
+	score: number
 }
 
 const initialState: GameTypes = {
@@ -14,14 +20,18 @@ const initialState: GameTypes = {
 	turn: 'X',
 	winner: null,
 	status: 'created',
-	players: ['', ''],
+	players: [
+		{ score: 0, name: '' },
+		{ score: 0, name: '' },
+	],
+	time: 15,
 }
 
 export const gameSlice = createSlice({
 	name: 'game',
 	initialState,
 	reducers: {
-		setPlayers: (state, action: PayloadAction<string[]>) => {
+		setPlayers: (state, action: PayloadAction<Players[]>) => {
 			state.players = action.payload
 		},
 		setWinner: (state, action: PayloadAction<string>) => {
@@ -36,12 +46,13 @@ export const gameSlice = createSlice({
 		setTurn: (state, action: PayloadAction<string>) => {
 			state.turn = action.payload
 		},
+		setTime: (state, action: PayloadAction<number>) => {
+			state.time = action.payload
+		},
 	},
-
-	extraReducers: (builder) => {},
 })
 
-export const { setPlayers, setWinner, setStatus, setBoard, setTurn } =
+export const { setPlayers, setWinner, setStatus, setBoard, setTurn, setTime } =
 	gameSlice.actions
 
 export const selectGameState = (state: RootState) => state.gameState
