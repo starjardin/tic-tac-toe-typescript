@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import { useAppDispatch } from '../../app/hooks'
 import { setPlayers, setStatus } from '../../features/slices/GameSlice'
-import Custom from '../Custom'
+import CustomHookProvider from '../CustomHookProvider'
 import Input from '../Input'
 
 export default function StartGame() {
@@ -11,7 +11,7 @@ export default function StartGame() {
 	const [firstPlayer, setFirstPlayer] = useState('')
 	const [secondPlayer, setSecondPlayer] = useState('')
 	const [time, setTime] = useState('5')
-	const { handleStart } = Custom()
+	const { handleStart } = CustomHookProvider()
 
 	function handleFirstPlayer(e: React.FormEvent<HTMLInputElement>) {
 		setFirstPlayer(e.currentTarget.value)

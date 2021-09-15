@@ -1,7 +1,10 @@
 import { useEffect } from 'react'
+import { useTimer } from 'react-timer-hook'
 import { useDispatch } from 'react-redux'
 import { useAppSelector } from '../app/hooks'
 import { selectGameState } from '../features/slices/GameSlice'
+import { ReturnValue, Players } from '../interfaces/interfaces'
+import { winningPositions } from '../constant'
 
 import {
 	setWinner,
@@ -11,39 +14,29 @@ import {
 	setPlayers,
 } from '../features/slices/GameSlice'
 
-interface ReturnValue {
-	board: string[]
-	status: string
-	winner: string | null
-	handleClick: (index: number) => void
-	handleRestart: () => void
-	handleStart: (players: Players[]) => void
-	handleReboot: () => void
-}
-
-interface Players {
-	name: string
-	score: number
-}
-
-const Custom = (): ReturnValue => {
-	const gameState = useAppSelector(selectGameState)
-	const { board, turn, winner, players, status } = gameState
+const CustomHookProvider = (): ReturnValue => {
+	const { board, turn, winner, players, status, time } =
+		useAppSelector(selectGameState)
 
 	const dispatch = useDispatch()
 
+	const expiryTimestamp = new Date()
+	expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + time)
+
+	const { seconds, minutes, hours, restart } = useTimer({
+		expiryTimestamp,
+		onExpire: () => {},
+	})
+
+	function restartTime() {
+		const newTime = new Date()
+		newTime.setSeconds(newTime.getSeconds() + time)
+		restart(newTime)
+		console.log('running')
+	}
+
 	useEffect(() => {
 		if (status !== 'started') return
-		const winningPositions = [
-			[0, 1, 2],
-			[3, 4, 5],
-			[6, 7, 8],
-			[0, 3, 6],
-			[1, 4, 7],
-			[2, 5, 8],
-			[0, 4, 8],
-			[2, 4, 6],
-		]
 
 		let winningPositionsIndex = 0
 		let winner: string | null = null
@@ -64,11 +57,13 @@ const Custom = (): ReturnValue => {
 		if (winner) {
 			dispatch(setWinner(winner === 'X' ? players[0].name : players[1].name))
 			dispatch(setStatus('finished'))
+
 			return
 		}
 		dispatch(
 			setStatus(board.filter((value) => !value).length ? 'started' : 'finished')
 		)
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [board, players, status])
 
@@ -114,11 +109,15 @@ const Custom = (): ReturnValue => {
 		board,
 		status,
 		winner,
+		seconds,
+		minutes,
+		hours,
 		handleClick,
 		handleRestart,
 		handleStart,
 		handleReboot,
+		restartTime,
 	}
 }
 
-export default Custom
+export default CustomHookProvider

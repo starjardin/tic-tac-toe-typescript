@@ -32,11 +32,19 @@ const ButtonStyles = styled.button`
 	&:focus {
 		outline: none;
 	}
+
+	span {
+		transform: rotate(45deg);
+	}
 `
 
 const Square = (props: ButtonProps) => {
 	const { index, value, handleClick } = props
-	return <ButtonStyles onClick={() => handleClick(index)}>{value}</ButtonStyles>
+	return (
+		<ButtonStyles onClick={() => handleClick(index)}>
+			<span>{value}</span>
+		</ButtonStyles>
+	)
 }
 
 export default Square

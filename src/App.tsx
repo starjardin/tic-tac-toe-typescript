@@ -1,12 +1,12 @@
 import './App.css'
-import Custom from './components/Custom'
-import EndGame from './components/endgame/EndGame'
+import CustomHookProvider from './components/CustomHookProvider'
+import RestartGame from './components/endgame/RestartGame'
 import WinningGame from './components/endgame/WinningGame'
 import Game from './components/ongame'
 import StartGame from './components/startgame'
 
 const App = () => {
-	const { status } = Custom()
+	const { status } = CustomHookProvider()
 
 	return (
 		<div className='App'>
@@ -14,7 +14,7 @@ const App = () => {
 			{status === 'created' && <StartGame />}
 			{status === 'finished' && <WinningGame />}
 			{status === 'started' && <Game />}
-			{status === 'restarted' && <EndGame />}
+			{status === 'restarted' && <RestartGame />}
 		</div>
 	)
 }

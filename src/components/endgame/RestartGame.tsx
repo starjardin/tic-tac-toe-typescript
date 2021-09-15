@@ -1,10 +1,10 @@
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectGameState, setStatus } from '../../features/slices/GameSlice'
 
-import Custom from '../Custom'
+import CustomHookProvider from '../CustomHookProvider'
 
-export default function EndGame() {
-	const { handleReboot } = Custom()
+export default function RestartGame() {
+	const { handleReboot } = CustomHookProvider()
 	const gameState = useAppSelector(selectGameState)
 	const dispatch = useAppDispatch()
 

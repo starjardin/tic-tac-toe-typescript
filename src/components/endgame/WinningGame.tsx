@@ -1,8 +1,9 @@
-import Custom from '../Custom'
+import CustomHookProvider from '../CustomHookProvider'
 import Game from '../ongame'
 
 const WinningGame = () => {
-	const { handleRestart, winner } = Custom()
+	const { handleRestart, winner } = CustomHookProvider()
+
 	return (
 		<div>
 			<h1>{winner ? `${winner} won !` : `It's a draw!`}</h1>

@@ -1,19 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../../app/store'
-
-export interface GameTypes {
-	board: string[]
-	turn: string
-	winner: string | null
-	status: string
-	players: Players[]
-	time: number
-}
-
-interface Players {
-	name: string
-	score: number
-}
+import { GameTypes, Players } from '../../interfaces/interfaces'
 
 const initialState: GameTypes = {
 	board: Array(9).fill(''),
@@ -24,7 +11,7 @@ const initialState: GameTypes = {
 		{ score: 0, name: '' },
 		{ score: 0, name: '' },
 	],
-	time: 5,
+	time: 3,
 }
 
 export const gameSlice = createSlice({
