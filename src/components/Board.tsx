@@ -1,13 +1,21 @@
+import { useEffect } from 'react'
+import { useTimer } from 'react-timer-hook'
 import styled from 'styled-components'
-import { useAppSelector } from '../app/hooks'
-import { selectGameState } from '../features/slices/GameSlice'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import {
+	selectGameState,
+	setStatus,
+	setWinner,
+} from '../features/slices/GameSlice'
 import Custom from './Custom'
+import Square from './Square'
 
-export default function Board() {
+export default function Board({ expiryTimestamp }: any) {
 	const gameState = useAppSelector(selectGameState)
-	const { board, turn, players, winner, time } = gameState
+	const { board, turn, players, winner, time, status } = gameState
 
 	const { handleClick } = Custom()
+	const dispatch = useAppDispatch()
 
 	const setTurn = () => {
 		if (winner === null || winner === '')
@@ -15,35 +23,67 @@ export default function Board() {
 		return
 	}
 
+	const { seconds, minutes, hours, restart } = useTimer({
+		expiryTimestamp,
+		onExpire: () => {},
+	})
+
+	function restartTime() {
+		const newTime = new Date()
+		newTime.setSeconds(newTime.getSeconds() + time)
+		restart(newTime)
+	}
+
+	const expireTime = new Date()
+	expireTime.setSeconds(expireTime.getSeconds() + time)
+
+	const handleSquareClick = (index: number) => {
+		handleClick(index)
+		restartTime()
+	}
+
+	useEffect(() => {
+		restartTime()
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 	return (
-		<div>
-			<div>{setTurn()}</div>
+		<BoardContainer>
+			{status !== 'finished' ? <div>{setTurn()}</div> : ''}
+			<LineThroughStyles />{' '}
 			<BoardStyles>
-				{' '}
 				{board.map((b: string, index: number) => (
 					<Square
 						index={index}
 						value={b}
 						key={index}
-						handleClick={() => handleClick(index)}
+						handleClick={() => handleSquareClick(index)}
 					/>
 				))}
 			</BoardStyles>
-			time left: {time}s
-		</div>
+			<div style={{ textAlign: 'center' }}>
+				{status === 'started' ? (
+					<div style={{ fontSize: '20px' }}>
+						<span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}s</span>
+					</div>
+				) : (
+					''
+				)}
+			</div>
+		</BoardContainer>
 	)
 }
 
-interface Props {
-	index: number
-	value: string
-	handleClick(index: number): void
-}
-const Square = (props: Props) => {
-	const { index, value, handleClick } = props
+const LineThroughStyles = styled.div`
+	max-width: 300px;
+	height: 2px;
+	background-color: #000;
+	margin: auto;
+`
 
-	return <ButtonStyles onClick={() => handleClick(index)}>{value}</ButtonStyles>
-}
+const BoardContainer = styled.div`
+	position: relative;
+`
 
 const BoardStyles = styled.div`
 	display: grid;
@@ -53,30 +93,40 @@ const BoardStyles = styled.div`
 	padding: 3rem 0;
 `
 
-const ButtonStyles = styled.button`
-	width: 100px;
-	height: 100px;
-	font-size: 46px;
-	&:nth-child(1),
-	&:nth-child(2),
-	&:nth-child(3),
-	&:nth-child(4),
-	&:nth-child(5),
-	&:nth-child(6) {
-		border-bottom: 1px solid #000;
+/*
+	const winningPositions = [
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+		[0, 3, 6],
+		[1, 4, 7],
+		[2, 5, 8],
+		[0, 4, 8],
+		[2, 4, 6],
+	]
+
+	let winningPositionsIndex = 0
+
+	while (winningPositionsIndex < winningPositions.length && !winner) {
+		const boardPositionsToCheck = winningPositions[winningPositionsIndex]
+
+		const boardValuesToCheck = boardPositionsToCheck.map(
+			(index) => board[index]
+		)
+
+		const checkingValue = boardValuesToCheck[0]
+
+		const isFinished = boardValuesToCheck.every(
+			(value) => value === checkingValue && checkingValue
+		)
+
+		const end = !isFinished ? null : checkingValue
+		if (end) {
+			// setValue(boardPositionsToCheck)
+		}
+		winningPositionsIndex++
 	}
 
-	&:nth-child(1),
-	&:nth-child(2),
-	&:nth-child(4),
-	&:nth-child(5),
-	&:nth-child(7),
-	&:nth-child(8) {
-		border-right: 1px solid #000;
-	}
-	background-color: #fff;
-	border: none;
-	&:focus {
-		outline: none;
-	}
-`
+
+*/
+// const [value, setValue] = useState(time)

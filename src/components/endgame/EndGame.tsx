@@ -1,4 +1,3 @@
-import React from 'react'
 import { useAppDispatch, useAppSelector } from '../../app/hooks'
 import { selectGameState, setStatus } from '../../features/slices/GameSlice'
 

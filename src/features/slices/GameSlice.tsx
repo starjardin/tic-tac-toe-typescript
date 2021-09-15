@@ -24,7 +24,7 @@ const initialState: GameTypes = {
 		{ score: 0, name: '' },
 		{ score: 0, name: '' },
 	],
-	time: 15,
+	time: 5,
 }
 
 export const gameSlice = createSlice({
