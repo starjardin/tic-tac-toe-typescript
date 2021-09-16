@@ -11,7 +11,6 @@ const WinningGame = () => {
 
 	useEffect(() => {
 		if (winner === null || winner === '') {
-			console.log('winner', winner)
 			setPlayers(
 				players.map((e: { name: string; score: number }) => ({
 					...e,

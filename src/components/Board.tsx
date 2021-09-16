@@ -56,7 +56,6 @@ export default function Board({ restartTime }: Props) {
 		let middleVerticalLine = [board[1], board[4], board[7]]
 		let rightLine = [board[2], board[5], board[8]]
 		let leftLine = [board[0], board[3], board[6]]
-		console.log(leftLine)
 
 		if (topLine.toString() === 'X,X,X' || topLine.toString() === 'O,O,O') {
 			className = 'topLine'
@@ -102,7 +101,11 @@ export default function Board({ restartTime }: Props) {
 	return (
 		<BoardContainer>
 			{status !== 'finished' ? <TurnStyles>{setTurn()}</TurnStyles> : ''}
-			{status === 'finished' ? <LineThroughStyles className={className} /> : ''}
+			{status === 'finished' && className !== '' ? (
+				<LineThroughStyles className={className} />
+			) : (
+				''
+			)}
 			<BoardStyles>
 				{board.map((b: string, index: number) => (
 					<Square
