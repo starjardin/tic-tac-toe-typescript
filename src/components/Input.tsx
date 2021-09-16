@@ -20,6 +20,7 @@ export default function Input({
 			type={type}
 			placeholder={placeHolder}
 			name={name}
+			required
 			onChange={(e) => handleOnchange(e)}
 			value={value}
 			min={1}

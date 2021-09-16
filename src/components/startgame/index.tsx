@@ -69,7 +69,7 @@ export default function StartGame() {
 				/>
 			</label>
 			<button type='submit' disabled={!firstPlayer && !secondPlayer}>
-				Start Game
+				Start Game <span>Please fill the inputs</span>
 			</button>
 		</FormStyles>
 	)
@@ -78,4 +78,23 @@ export default function StartGame() {
 const FormStyles = styled.form`
 	display: flex;
 	flex-direction: column;
+	button {
+		position: relative;
+	}
+	button {
+		span {
+			visibility: hidden;
+			position: absolute;
+		}
+	}
+	button:disabled:hover {
+		span {
+			visibility: visible;
+			font-size: 2rem;
+			width: 100%;
+			left: 0;
+			top: 4rem;
+			margin: 0;
+		}
+	}
 `
