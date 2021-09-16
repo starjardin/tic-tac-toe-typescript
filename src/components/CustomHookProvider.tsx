@@ -86,7 +86,7 @@ const CustomHookProvider = (): ReturnValue => {
 		dispatch(setStatus('restarted'))
 		dispatch(
 			setPlayers(
-				players.map((e: any) => {
+				players.map((e: { name: string; score: number }) => {
 					if (e.name === winner) {
 						return {
 							...e,
@@ -121,5 +121,3 @@ const CustomHookProvider = (): ReturnValue => {
 }
 
 export default CustomHookProvider
-
-console.log('Hello world')

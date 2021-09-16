@@ -26,6 +26,7 @@ export const GlobalStyles = createGlobalStyle`
   h1, label {
     font-size: clamp(1.7rem, 4rem, 4.5rem); 
     line-height: 72px;
+    margin: 0 0 2rem 0;
   }
 
   body {

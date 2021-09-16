@@ -4,6 +4,7 @@ interface ButtonProps {
 	index: number
 	value: string
 	handleClick(index: number): void
+	classNames: string
 }
 
 const ButtonStyles = styled.button`
@@ -32,16 +33,13 @@ const ButtonStyles = styled.button`
 	&:focus {
 		outline: none;
 	}
-
-	span {
-		transform: rotate(45deg);
-	}
 `
 
 const Square = (props: ButtonProps) => {
-	const { index, value, handleClick } = props
+	const { index, value, handleClick, classNames } = props
+
 	return (
-		<ButtonStyles onClick={() => handleClick(index)}>
+		<ButtonStyles className={classNames} onClick={() => handleClick(index)}>
 			<span>{value}</span>
 		</ButtonStyles>
 	)
