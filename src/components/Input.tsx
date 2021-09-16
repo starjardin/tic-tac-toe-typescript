@@ -22,6 +22,7 @@ export default function Input({
 			name={name}
 			onChange={(e) => handleOnchange(e)}
 			value={value}
+			min={1}
 		/>
 	)
 }
