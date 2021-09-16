@@ -1,6 +1,11 @@
+import { useEffect } from 'react'
 import styled from 'styled-components'
-import { useAppSelector } from '../app/hooks'
-import { selectGameState } from '../features/slices/GameSlice'
+import { useAppDispatch, useAppSelector } from '../app/hooks'
+import {
+	selectGameState,
+	setStatus,
+	setWinner,
+} from '../features/slices/GameSlice'
 import CustomHookProvider from './CustomHookProvider'
 import Square from './Square'
 
@@ -10,8 +15,9 @@ interface Props {
 
 export default function Board({ restartTime }: Props) {
 	const gameState = useAppSelector(selectGameState)
-	const { board, turn, players, winner, status } = gameState
+	const { board, turn, players, winner, status, time } = gameState
 	const { handleClick } = CustomHookProvider()
+	const dispatch = useAppDispatch()
 
 	const setTurn = () => {
 		if (winner === null || winner === '')
@@ -24,10 +30,19 @@ export default function Board({ restartTime }: Props) {
 		restartTime()
 	}
 
+	useEffect(() => {
+		const timeoutId = setTimeout(() => {
+			dispatch(setWinner(turn === 'X' ? players[1].name : players[0].name))
+			dispatch(setStatus('finished'))
+		}, time * 1000)
+		return () => clearTimeout(timeoutId)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [board])
+
 	return (
 		<BoardContainer>
 			{status !== 'finished' ? <div>{setTurn()}</div> : ''}
-			<LineThroughStyles />{' '}
+			{status === 'finished' ? <LineThroughStyles /> : ''}
 			<BoardStyles>
 				{board.map((b: string, index: number) => (
 					<Square

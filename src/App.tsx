@@ -1,4 +1,3 @@
-import './App.css'
 import CustomHookProvider from './components/CustomHookProvider'
 import RestartGame from './components/endgame/RestartGame'
 import WinningGame from './components/endgame/WinningGame'
@@ -9,7 +8,7 @@ const App = () => {
 	const { status } = CustomHookProvider()
 
 	return (
-		<div className='App'>
+		<div>
 			<h1>Tic tac toe</h1>
 			{status === 'created' && <StartGame />}
 			{status === 'finished' && <WinningGame />}

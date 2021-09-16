@@ -9,6 +9,7 @@ export interface ReturnValue {
 	seconds: number
 	minutes: number
 	hours: number
+	time: number
 	restartTime: () => void
 }
 

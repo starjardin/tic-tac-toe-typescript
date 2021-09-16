@@ -1,13 +1,13 @@
+import Board from '../Board'
 import CustomHookProvider from '../CustomHookProvider'
-import Game from '../ongame'
 
 const WinningGame = () => {
-	const { handleRestart, winner } = CustomHookProvider()
+	const { handleRestart, restartTime, winner } = CustomHookProvider()
 
 	return (
 		<div>
 			<h1>{winner ? `${winner} won !` : `It's a draw!`}</h1>
-			<Game />
+			<Board restartTime={restartTime} />
 			<button onClick={handleRestart}>Restart</button>
 		</div>
 	)

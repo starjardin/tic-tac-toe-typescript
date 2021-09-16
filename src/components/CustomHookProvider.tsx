@@ -32,7 +32,6 @@ const CustomHookProvider = (): ReturnValue => {
 		const newTime = new Date()
 		newTime.setSeconds(newTime.getSeconds() + time)
 		restart(newTime)
-		console.log('running')
 	}
 
 	useEffect(() => {
@@ -112,6 +111,7 @@ const CustomHookProvider = (): ReturnValue => {
 		seconds,
 		minutes,
 		hours,
+		time,
 		handleClick,
 		handleRestart,
 		handleStart,
@@ -121,3 +121,5 @@ const CustomHookProvider = (): ReturnValue => {
 }
 
 export default CustomHookProvider
+
+console.log('Hello world')

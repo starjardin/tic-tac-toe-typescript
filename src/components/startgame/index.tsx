@@ -2,7 +2,7 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 import { useAppDispatch } from '../../app/hooks'
-import { setPlayers, setStatus } from '../../features/slices/GameSlice'
+import { setTime, setPlayers, setStatus } from '../../features/slices/GameSlice'
 import CustomHookProvider from '../CustomHookProvider'
 import Input from '../Input'
 
@@ -10,15 +10,15 @@ export default function StartGame() {
 	const dispatch = useAppDispatch()
 	const [firstPlayer, setFirstPlayer] = useState('')
 	const [secondPlayer, setSecondPlayer] = useState('')
-	const [time, setTime] = useState('5')
-	const { handleStart } = CustomHookProvider()
+	const { handleStart, time } = CustomHookProvider()
+	const [timeLimit, setTimeLimit] = useState('' + time)
 
 	function handleFirstPlayer(e: React.FormEvent<HTMLInputElement>) {
 		setFirstPlayer(e.currentTarget.value)
 	}
 
 	function handleTime(e: React.FormEvent<HTMLInputElement>) {
-		setTime(e.currentTarget.value)
+		setTimeLimit(e.currentTarget.value)
 	}
 
 	function handleSecondPlayer(e: React.FormEvent<HTMLInputElement>) {
@@ -35,6 +35,7 @@ export default function StartGame() {
 		dispatch(setPlayers(players))
 		handleStart(players)
 		dispatch(setStatus('started'))
+		dispatch(setTime(Number(timeLimit)))
 	}
 
 	return (
@@ -42,7 +43,7 @@ export default function StartGame() {
 			<label>
 				x
 				<Input
-					placeHolder={'leave empty to use AI or enter player name'}
+					placeHolder={'enter a player name'}
 					name={'first-player'}
 					type={'text'}
 					handleOnchange={(e) => handleFirstPlayer(e)}
@@ -52,22 +53,24 @@ export default function StartGame() {
 				o
 				<Input
 					type='text'
-					placeHolder='leave empty to use AI or enter player name'
+					placeHolder='enter a player name'
 					name='second-player'
 					handleOnchange={(e) => handleSecondPlayer(e)}
 				/>
 			</label>
 			<label>
-				turn Time limit in seconds:
+				<span>turn Time limit in seconds:</span>
 				<Input
 					type='number'
 					name='time'
 					handleOnchange={(e) => handleTime(e)}
 					placeHolder={''}
-					defaultValue={5}
+					value={timeLimit}
 				/>
 			</label>
-			<button type='submit'>Start Game</button>
+			<button type='submit' disabled={!firstPlayer && !secondPlayer}>
+				Start Game
+			</button>
 		</FormStyles>
 	)
 }
@@ -75,5 +78,4 @@ export default function StartGame() {
 const FormStyles = styled.form`
 	display: flex;
 	flex-direction: column;
-	align-items: baseline;
 `

@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 interface InputProps {
 	handleOnchange: (e: React.FormEvent<HTMLInputElement>) => void
 	type: string
-	defaultValue?: string | number
+	value?: string | number
 	placeHolder: string
 	name: string
 }
@@ -11,12 +11,10 @@ interface InputProps {
 export default function Input({
 	handleOnchange,
 	type,
-	defaultValue,
 	placeHolder,
 	name,
+	value,
 }: InputProps) {
-	const [value, setValue] = useState(defaultValue)
-
 	return (
 		<input
 			type={type}
