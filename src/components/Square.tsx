@@ -39,7 +39,10 @@ const Square = (props: ButtonProps) => {
 	const { index, value, handleClick, classNames } = props
 
 	return (
-		<ButtonStyles className={classNames} onClick={() => handleClick(index)}>
+		<ButtonStyles
+			disabled={value !== ''}
+			className={classNames}
+			onClick={() => handleClick(index)}>
 			<span>{value}</span>
 		</ButtonStyles>
 	)
