@@ -59,7 +59,7 @@ export default function StartGame() {
 				/>
 			</label>
 			<label>
-				<span>turn Time limit in seconds:</span>
+				<span>Turn Time limit in seconds:</span>
 				<Input
 					type='number'
 					name='time'
